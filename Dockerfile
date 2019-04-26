@@ -3,6 +3,16 @@ MAINTAINER Ngo Hai Nam
 
 ENV PYTHONUNBUFFERED 1
 
+RUN set -e; \
+    apk add --no-cache --virtual .build-deps \
+    gcc \
+    libc-dev \
+    linux-headers \
+    mariadb-dev \
+    python3-dev \
+    postgresql-dev \
+;
+
 COPY ./requirements.txt /requirements.txt
 RUN pip install -r ./requirements.txt
 
