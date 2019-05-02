@@ -28,6 +28,9 @@ services:
       - MYSQL_USER=admin
       - MYSQL_PASSWORD=12345678@
       - MYSQL_LOYALTY_DATABASE=demo
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin

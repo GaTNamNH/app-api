@@ -12,3 +12,4 @@ django-environ==0.4.5  # https://github.com/joke2k/django-environ
 djangorestframework-jwt==1.11.0
 djangorestframework==3.8.2  # https://github.com/encode/django-rest-framework
 django-rest-swagger # https://django-rest-swagger.readthedocs.io/en/latest/
+drf-yasg==1.2.1
