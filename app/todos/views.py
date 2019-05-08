@@ -15,13 +15,14 @@ class TodoViewset(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filter_fields = '__all__'
 
-    # @swagger_auto_schema(method='post', operation_description='GET /articles/today/')
-    # @action(detail=False, methods=['post'])
-    # def today(self, request):
-    #     return Response({
-    #         'status': False,
-    #         'data': 'all'
-    #     }, status=HTTP_200_OK)
+    @swagger_auto_schema(method='post', operation_description='GET /todos/today/')
+    @action(detail=False, methods=['post'])
+    def today(self, request):
+        print(request.COOKIES)
+        return Response({
+            'status': False,
+            'data': 'all'
+        }, status=HTTP_200_OK)
 
 class CategoryViewset(viewsets.ModelViewSet):
     queryset = Category.objects.all()

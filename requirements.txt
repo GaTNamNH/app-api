@@ -14,3 +14,4 @@ djangorestframework==3.8.2  # https://github.com/encode/django-rest-framework
 django-rest-swagger # https://django-rest-swagger.readthedocs.io/en/latest/
 drf-yasg==1.2.1
 django-url-filter==0.3.12
+django-cors-headers==2.5.3
