@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Todo, Category, Tag
+from django import forms
+from .models import Todo, Category, Tag, LANGUAGE_CHOICES, STYLE_CHOICES
 
 class CategorySerializers(serializers.ModelSerializer):
 
@@ -18,10 +19,8 @@ class TodoSerializers(serializers.ModelSerializer):
     subject = serializers.CharField()
     content = serializers.CharField()
     timer = serializers.TimeField()
-    created = serializers.DateTimeField(read_only=True)
-    # category = serializers.PKOnlyObject(pk=True)
-    category = CategorySerializers()
-    tags = serializers.StringRelatedField(many=True)
+    language = serializers.ChoiceField(choices=LANGUAGE_CHOICES, default='python')
+    style = serializers.ChoiceField(choices=STYLE_CHOICES, default='friendly')
 
     class Meta:
         model = Todo

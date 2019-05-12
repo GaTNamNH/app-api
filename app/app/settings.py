@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework_jwt',
     'corsheaders',
     'drf_yasg',
+    'elasticsearch_dsl',
     'rest_framework_swagger',
     'todos.apps.TodosConfig',
     'users.apps.UsersConfig',
@@ -58,6 +59,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+ELASTICSEARCH_DSL={
+    'default': {
+        'hosts': 'localhost:9200'
+    },
+}
 
 ROOT_URLCONF = 'app.urls'
 

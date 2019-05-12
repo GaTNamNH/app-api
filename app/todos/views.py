@@ -1,4 +1,7 @@
 #from django.shortcuts import render
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import JSONParser
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -7,6 +10,8 @@ from drf_yasg.utils import swagger_auto_schema
 from .serializers import TodoSerializers, CategorySerializers, TagSerializers
 from .models import Todo, Category, Tag
 from url_filter.integrations.drf import DjangoFilterBackend
+from rest_framework import permissions
+from .document import TodoDocument
 # Create your views here.
 
 class TodoViewset(viewsets.ModelViewSet):
@@ -14,11 +19,43 @@ class TodoViewset(viewsets.ModelViewSet):
     serializer_class = TodoSerializers
     filter_backends = [DjangoFilterBackend]
     filter_fields = '__all__'
+    # permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
-    @swagger_auto_schema(method='post', operation_description='GET /todos/today/')
+    @action(detail=False, methods=['get', 'post'])
+    def snippet_list(self, request):
+        """
+        List all code snippets, or create a new snippet.
+        """
+        if request.method == 'GET':
+            tags = Tag.objects.all()
+            serializer = TagSerializers(tags, many=True)
+            return JsonResponse(serializer.data, safe=False)
+
+        elif request.method == 'POST':
+            data = JSONParser().parse(request)
+            serializer = TagSerializers(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=201)
+            return JsonResponse(serializer.errors, status=400)
+
+    @swagger_auto_schema(
+        method='post',
+        operation_description='GET /todos/today/',
+        request_body=TagSerializers,
+        responses={
+            200: CategorySerializers,
+            201: TagSerializers
+        }
+    )
     @action(detail=False, methods=['post'])
     def today(self, request):
-        print(request.COOKIES)
+        s = TodoDocument.search().query("match", subject="string")
+        for hit in s:
+            print(
+                "Todo subject : {}, content {}".format(hit.subject, hit.content)
+            )
+        print(request.user)
         return Response({
             'status': False,
             'data': 'all'
