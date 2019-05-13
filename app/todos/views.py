@@ -50,12 +50,9 @@ class TodoViewset(viewsets.ModelViewSet):
     )
     @action(detail=False, methods=['post'])
     def today(self, request):
-        s = TodoDocument.search().query("match", subject="string")
+        s = TodoDocument.search().query("fuzzy", subject="tring3")
         for hit in s:
-            print(
-                "Todo subject : {}, content {}".format(hit.subject, hit.content)
-            )
-        print(request.user)
+            print("Todo >> subject: {}, content: {}".format(hit.subject, hit.content))
         return Response({
             'status': False,
             'data': 'all'

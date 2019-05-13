@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'rest_framework_jwt',
     'corsheaders',
     'drf_yasg',
-    'elasticsearch_dsl',
+    'django_elasticsearch_dsl',
     'rest_framework_swagger',
     'todos.apps.TodosConfig',
     'users.apps.UsersConfig',
@@ -62,7 +62,7 @@ MIDDLEWARE = [
 
 ELASTICSEARCH_DSL={
     'default': {
-        'hosts': 'localhost:9200'
+        'hosts': 'elasticsearch:9200'
     },
 }
 

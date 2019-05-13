@@ -3,7 +3,7 @@ from .models import Todo
 
 # Name of the Elasticsearch index
 todo = Index('todos')
-# See Elasticsearch Indices API reference for available settings
+
 todo.settings(
     number_of_shards=1,
     number_of_replicas=0
