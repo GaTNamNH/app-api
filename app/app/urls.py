@@ -27,6 +27,7 @@ api = [
     url(r'^auths/refresh/', refresh_jwt_token),
     url(r'^auths/verify/', verify_jwt_token),
     url(r'^todos/', include('todos.urls'), name="todos"),
+    url(r'^posts/', include('posts.urls'), name="posts"),
 ]
 
 schema_view = get_schema_view(

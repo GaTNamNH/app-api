@@ -17,6 +17,17 @@ django-url-filter==0.3.12
 django-cors-headers==2.5.3
 Pygments==2.4.0
 
+# Elasticsearch
 elasticsearch-dsl>=6.0,<6.2
 django-elasticsearch-dsl==0.5.1
 urllib3>=1.21.1,<1.25
+
+# AWS
+django-storages==1.7.1
+
+# Image processor
+django-imagekit==4.0.2
+pilkit==2.0
+Pillow==5.3.0
+
+celery==4.2.1

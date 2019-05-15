@@ -44,8 +44,11 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_yasg',
     'django_elasticsearch_dsl',
+    'storages',
+    'imagekit',
     'rest_framework_swagger',
     'todos.apps.TodosConfig',
+    'posts.apps.PostsConfig',
     'users.apps.UsersConfig',
 ]
 
@@ -65,6 +68,16 @@ ELASTICSEARCH_DSL={
         'hosts': 'elasticsearch:9200'
     },
 }
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_ACCESS_KEY_ID='AKIATED5DABB3VRXPDOF'
+AWS_SECRET_ACCESS_KEY='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'
+AWS_STORAGE_BUCKET_NAME='streaming.interview'
+AWS_S3_REGION_NAME='ap-southeast-1'
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_QUERYSTRING_AUTH=False
 
 ROOT_URLCONF = 'app.urls'
 
@@ -160,3 +173,5 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
     )
 }
+
+IMAGEKIT_DEFAULT_CACHEFILE_STRATEGY = 'utils.imagegenerators.FixJustInTime'

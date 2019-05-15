@@ -12,6 +12,7 @@ from .models import Todo, Category, Tag
 from url_filter.integrations.drf import DjangoFilterBackend
 from rest_framework import permissions
 from .document import TodoDocument
+import boto3
 # Create your views here.
 
 class TodoViewset(viewsets.ModelViewSet):
@@ -41,7 +42,7 @@ class TodoViewset(viewsets.ModelViewSet):
 
     @swagger_auto_schema(
         method='post',
-        operation_description='GET /todos/today/',
+        operation_description='GET /todos/elastic/',
         request_body=TagSerializers,
         responses={
             200: CategorySerializers,
@@ -49,7 +50,7 @@ class TodoViewset(viewsets.ModelViewSet):
         }
     )
     @action(detail=False, methods=['post'])
-    def today(self, request):
+    def elastic(self, request):
         s = TodoDocument.search().query("fuzzy", subject="tring3")
         for hit in s:
             print("Todo >> subject: {}, content: {}".format(hit.subject, hit.content))
