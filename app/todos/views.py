@@ -12,7 +12,6 @@ from .models import Todo, Category, Tag
 from url_filter.integrations.drf import DjangoFilterBackend
 from rest_framework import permissions
 from .document import TodoDocument
-import boto3
 # Create your views here.
 
 class TodoViewset(viewsets.ModelViewSet):
