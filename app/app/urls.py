@@ -26,6 +26,7 @@ api = [
     url(r'^auths/', obtain_jwt_token),
     url(r'^auths/refresh/', refresh_jwt_token),
     url(r'^auths/verify/', verify_jwt_token),
+    url(r'^social/', include('social.urls'), name="social"),
     url(r'^todos/', include('todos.urls'), name="todos"),
     url(r'^posts/', include('posts.urls'), name="posts"),
 ]

@@ -31,4 +31,10 @@ django-imagekit==4.0.2
 pilkit==2.0
 Pillow==5.3.0
 
+# Celery for job queue
 celery==4.2.1
+
+# Social login
+social-auth-core>=3.0,<4.0
+social-auth-app-django>=3.1,<4.0
+rest-social-auth>=2.1.0,<3.0

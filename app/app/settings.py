@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_jwt',
+    'social_django',
+    'rest_social_auth',
     'corsheaders',
     'drf_yasg',
     'django_elasticsearch_dsl',
@@ -175,3 +177,57 @@ REST_FRAMEWORK = {
 }
 
 IMAGEKIT_DEFAULT_CACHEFILE_STRATEGY = 'utils.imagegenerators.FixJustInTime'
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, '../templates')]
+        ,
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+SOCIAL_AUTH_FACEBOOK_TOKEN_KEY = SOCIAL_AUTH_FACEBOOK_APP_KEY = SOCIAL_AUTH_FACEBOOK_KEY = '607955789722350'
+SOCIAL_AUTH_FACEBOOK_TOKEN_SECRET = SOCIAL_AUTH_FACEBOOK_APP_SECRET = SOCIAL_AUTH_FACEBOOK_SECRET = '462ecb0c55af5ab9b47b35a06d1e8567'
+SOCIAL_AUTH_FACEBOOK_TOKEN_SCOPE = SOCIAL_AUTH_FACEBOOK_APP_SCOPE = SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_TOKEN_PROFILE_EXTRA_PARAMS = SOCIAL_AUTH_FACEBOOK_APP_PROFILE_EXTRA_PARAMS = SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'fields': ','.join([
+        'email', 'id', 'cover', 'name', 'first_name', 'last_name', 'age_range', 'link', 'gender', 'locale', 'picture',
+        'timezone', 'updated_time', 'verified',
+    ]),
+}
+
+
+AUTHENTICATION_BACKENDS = (
+    'social.backends.FacebookOAuth2Token',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.facebook.FacebookAppOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+
+SOCIAL_AUTH_PIPELINE = (
+    'social.pipeline.auto_logout',
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.mail.mail_validation',
+    'social_core.pipeline.social_auth.associate_by_email',
+    'social.pipeline.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+    # '.social.pipeline.save_avatar',
+)
+
+CLEAN_USERNAME_FUNCTION = 'social.helper.clean_username'
