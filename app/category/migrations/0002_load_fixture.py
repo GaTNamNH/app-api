@@ -11,7 +11,7 @@ def load_category_initial_data(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('posts', '0001_initial'),
+        ('category', '0001_initial'),
     ]
 
     operations = [

@@ -6,41 +6,9 @@ from rest_framework.settings import api_settings
 from rest_framework.exceptions import ValidationError
 from rest_framework.fields import get_error_detail, set_value
 from rest_framework.fields import SkipField
-from users.decorators import UserBasicDecorators
-from job.serializers import MajorRelatedSerializers
-from job.models import Major
-from .models import Category, Post, POST_STATE
-
-class CategorySerializers(serializers.ModelSerializer):
-
-    class Meta:
-        model = Category
-        fields = ('id', 'display_name')
-
-class CategoryRelatedSerializers(serializers.RelatedField):
-
-    class Meta:
-        model = Category
-        fields = ('id', 'display_name')
-    
-    def to_representation(self, value):
-        return {
-            'id': value.id,
-            'display_name': value.display_name
-        }
-
-    def to_internal_value(self, data):
-        ids = list(category.id for category in self.queryset)
-        msg = None
-        try:
-            data = int(data)
-            if not data in ids:
-                msg = _('invalid category.')
-        except:
-            msg = _('invalid category.')
-        if msg:
-            raise ValidationError(msg)
-        return data
+from category.serializers import CategoryRelatedSerializers
+from category.models import Category
+from .models import Post
 
 class PostSerializers(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
@@ -49,15 +17,11 @@ class PostSerializers(serializers.ModelSerializer):
     thumb = serializers.SerializerMethodField()
     body = serializers.CharField()
     intro = serializers.CharField()
-    state = serializers.ChoiceField(choices=POST_STATE, default=-1)
-    publish_time = serializers.DateTimeField(required=False)
     categories = CategoryRelatedSerializers(many=True, queryset=Category.objects.all())
-    majors = MajorRelatedSerializers(many=True, queryset=Major.objects.all())
-    user = UserBasicDecorators(read_only=True)
 
     class Meta:
         model = Post
-        fields = ('id', 'title', 'cover', 'thumb', 'body', 'intro', 'state', 'publish_time', 'categories', 'majors', 'user')
+        fields = ('id', 'title', 'cover', 'thumb', 'body', 'intro', 'categories')
 
     def get_thumb(self, obj):
         if obj.cover:
@@ -83,13 +47,6 @@ class PostSerializers(serializers.ModelSerializer):
         except:
             pass
 
-        # convert majors from string to list
-        majors = None
-        try:
-            majors = data['majors'].replace('"', '').split(',')
-        except:
-            pass
-        
         ret = OrderedDict()
         errors = OrderedDict()
         fields = self._writable_fields
@@ -104,14 +61,7 @@ class PostSerializers(serializers.ModelSerializer):
                     primitive_value = categories
                 else:
                     continue
-            
-            # if field is 'majors', set primitive_value to majors. if majors, skip to next loop
-            if field.field_name == 'majors':
-                if majors is not None:
-                    primitive_value = majors
-                else:
-                    continue
-
+           
             try:
                 validated_value = field.run_validation(primitive_value)
                 if validate_method is not None:
@@ -129,4 +79,3 @@ class PostSerializers(serializers.ModelSerializer):
             raise ValidationError(errors)
 
         return ret
-
